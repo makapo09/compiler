@@ -5,6 +5,8 @@
 #include "icode.h"
 #include "bison_symtable.h"
 #include "alpha_tokens.h"
+#include "generator.h"
+#include "target_code.h"
 
 
 extern int alpha_yylex();
@@ -667,8 +669,22 @@ int main(int argc, char** argv) {
 
     SymTable_init();
     yyparse();
-    SymTable_print();
-    print_quads(stdout);
-    write_quads_to_file("quads.txt");
-    return 0;
+
+    if (yynerrs == 0) {
+        printf("Compilation successful!\n");
+
+        write_quads_to_file("quads.txt");
+
+        generate_instructions();
+
+        write_binary_target_code("alpha.abc");
+        write_text_target_code("alpha.txt");
+
+        printf("Output files generated: quads.txt, alpha.abc, alpha.txt\n");
+    } else {
+        fprintf(stderr, "Compilation failed with %d syntax error(s).\n", yynerrs);
+        return 1;
+    }
+
+    return 0; 
 }

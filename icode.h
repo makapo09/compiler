@@ -2,8 +2,10 @@
 #define ICODE_H
 
 #include <stdio.h>
-
 #include "bison_symtable.h"
+
+extern int yynerrs;
+extern int yylineno;
 
 typedef Symbol_t Symbol;
 
@@ -97,8 +99,6 @@ struct statement* create_statement ();
 
 expr* make_call (expr* lv, expr* reversed_elist);
 
-
-
 expr* newtemp(void);
 quad* get_quad_at(unsigned index);
 unsigned nextquadlabel(void);
@@ -110,7 +110,7 @@ expr* emit_iftableitem(expr* e);
 void check_arith (expr* e);
 void patchlabel(unsigned quadNo, unsigned label);
 void patchlist(struct jumpLabels* list, unsigned label);
-struct jumpLabels* mergelist(struct jumpLabels* l1, struct jumpLabels* l2);
 struct jumpLabels* makelist(unsigned label);
+struct jumpLabels* mergelist(struct jumpLabels* l1, struct jumpLabels* l2);
 
-#endif 
+#endif
