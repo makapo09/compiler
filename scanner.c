@@ -1,6 +1,6 @@
-#line 2 "scanner.c"
+#line 1 "scanner.c"
 
-#line 4 "scanner.c"
+#line 3 "scanner.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -47,6 +47,7 @@ typedef int16_t flex_int16_t;
 typedef uint16_t flex_uint16_t;
 typedef int32_t flex_int32_t;
 typedef uint32_t flex_uint32_t;
+typedef uint64_t flex_uint64_t;
 #else
 typedef signed char flex_int8_t;
 typedef short int flex_int16_t;
@@ -155,7 +156,7 @@ typedef struct yy_buffer_state *YY_BUFFER_STATE;
 typedef size_t yy_size_t;
 #endif
 
-extern int yyleng;
+extern yy_size_t yyleng;
 
 extern FILE *yyin, *yyout;
 
@@ -172,7 +173,7 @@ extern FILE *yyin, *yyout;
      */
     #define  YY_LESS_LINENO(n) \
             do { \
-                int yyl;\
+                yy_size_t yyl;\
                 for ( yyl = n; yyl < yyleng; ++yyl )\
                     if ( yytext[yyl] == '\n' )\
                         --yylineno;\
@@ -217,7 +218,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	int yy_n_chars;
+	yy_size_t yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -286,8 +287,8 @@ static YY_BUFFER_STATE * yy_buffer_stack = NULL; /**< Stack as an array. */
 
 /* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
-static int yy_n_chars;		/* number of characters read into yy_ch_buf */
-int yyleng;
+static yy_size_t yy_n_chars;		/* number of characters read into yy_ch_buf */
+yy_size_t yyleng;
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = NULL;
@@ -314,7 +315,7 @@ static void yy_init_buffer ( YY_BUFFER_STATE b, FILE *file  );
 
 YY_BUFFER_STATE yy_scan_buffer ( char *base, yy_size_t size  );
 YY_BUFFER_STATE yy_scan_string ( const char *yy_str  );
-YY_BUFFER_STATE yy_scan_bytes ( const char *bytes, int len  );
+YY_BUFFER_STATE yy_scan_bytes ( const char *bytes, yy_size_t len  );
 
 void *yyalloc ( yy_size_t  );
 void *yyrealloc ( void *, yy_size_t  );
@@ -370,7 +371,7 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
  */
 #define YY_DO_BEFORE_ACTION \
 	(yytext_ptr) = yy_bp; \
-	yyleng = (int) (yy_cp - yy_bp); \
+	yyleng = (yy_size_t) (yy_cp - yy_bp); \
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
@@ -558,24 +559,26 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "al.l"
 #line 2 "al.l"
-    #include "parser.h" 
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include "icode.h"
     #include "alpha_tokens.h"
+    #include "parser.h" 
+
 
     extern int alpha_yylex(void *);
     extern FILE *yyin;
 
     char* string = NULL;
     int i,counter=1;
-#line 573 "scanner.c"
+#line 575 "scanner.c"
 #define YY_NO_INPUT 1
 /* Keywords */
 /* Operators */
 /* Punctuation */
  
-#line 579 "scanner.c"
+#line 581 "scanner.c"
 
 #define INITIAL 0
 #define STRING 1
@@ -616,7 +619,7 @@ FILE *yyget_out ( void );
 
 void yyset_out  ( FILE * _out_str  );
 
-			int yyget_leng ( void );
+			yy_size_t yyget_leng ( void );
 
 char *yyget_text ( void );
 
@@ -683,7 +686,7 @@ static int input ( void );
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
 		{ \
 		int c = '*'; \
-		int n; \
+		yy_size_t n; \
 		for ( n = 0; n < max_size && \
 			     (c = getc( yyin )) != EOF && c != '\n'; ++n ) \
 			buf[n] = (char) c; \
@@ -792,9 +795,9 @@ YY_DECL
 		}
 
 	{
-#line 77 "al.l"
+#line 79 "al.l"
 
-#line 798 "scanner.c"
+#line 800 "scanner.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -842,7 +845,7 @@ yy_find_action:
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
 			{
-			int yyl;
+			yy_size_t yyl;
 			for ( yyl = 0; yyl < yyleng; ++yyl )
 				if ( yytext[yyl] == '\n' )
 					
@@ -863,327 +866,327 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 78 "al.l"
+#line 80 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return IF;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 79 "al.l"
+#line 81 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return ELSE;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 80 "al.l"
+#line 82 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return WHILE;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 81 "al.l"
+#line 83 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return FOR;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 82 "al.l"
+#line 84 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return FUNCTION;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 83 "al.l"
+#line 85 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return RETURN;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 84 "al.l"
+#line 86 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return BREAK;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 85 "al.l"
+#line 87 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return CONTINUE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 86 "al.l"
+#line 88 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return AND;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 87 "al.l"
+#line 89 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return OR;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 88 "al.l"
+#line 90 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return NOT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 89 "al.l"
+#line 91 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return TRUE;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 90 "al.l"
+#line 92 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return FALSE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 91 "al.l"
+#line 93 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return NIL;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 92 "al.l"
+#line 94 "al.l"
 {add_token(yylineno, yytext, "KEYWORD", "enumarated"); return LOCAL;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 94 "al.l"
+#line 96 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return ASSIGN;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 95 "al.l"
+#line 97 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return PLUS;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 96 "al.l"
+#line 98 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return MINUS;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 97 "al.l"
+#line 99 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return MULTIPLY;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 98 "al.l"
+#line 100 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return DIVIDE;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 99 "al.l"
+#line 101 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return MODULO;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 100 "al.l"
+#line 102 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return EQUAL;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 101 "al.l"
+#line 103 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return NOT_EQUAL;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 102 "al.l"
+#line 104 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return INCREMENT;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 103 "al.l"
+#line 105 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return DECREMENT;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 104 "al.l"
+#line 106 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return GREATER_THAN;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 105 "al.l"
+#line 107 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return LESS_THAN;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 106 "al.l"
+#line 108 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return GREATER_EQUAL;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 107 "al.l"
+#line 109 "al.l"
 {add_token(yylineno, yytext, "OPERATOR", "enumarated"); return LESS_EQUAL;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 109 "al.l"
+#line 111 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return BRACKET_OPEN;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 110 "al.l"
+#line 112 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return BRACKET_CLOSE;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 111 "al.l"
+#line 113 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return CURLY_BRACKET_OPEN;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 112 "al.l"
+#line 114 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return CURLY_BRACKET_CLOSE;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 113 "al.l"
+#line 115 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return SQUARE_BRACKET_OPEN;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 114 "al.l"
+#line 116 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return SQUARE_BRACKET_CLOSE;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 115 "al.l"
+#line 117 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return COMMA;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 116 "al.l"
+#line 118 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return SEMICOLON;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 117 "al.l"
+#line 119 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return COLON;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 118 "al.l"
+#line 120 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return DOUBLE_COLON;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 119 "al.l"
+#line 121 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return DOT;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 120 "al.l"
+#line 122 "al.l"
 {add_token(yylineno, yytext, "PUNCTUATION", "enumarated"); return DOUBLE_DOT;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 122 "al.l"
+#line 124 "al.l"
 {add_token(yylineno, yytext, "CONSTANT", "int"); yylval.intVal = atoi(yytext); return INTCONST;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 123 "al.l"
+#line 125 "al.l"
 {add_token(yylineno, yytext, "CONSTANT", "float"); yylval.floatVal = atof(yytext); return FLOATCONST;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 124 "al.l"
+#line 126 "al.l"
 {add_token(yylineno, yytext, "IDENTIFIER", "char*"); yylval.strVal = strdup(yytext);  return IDENTIFIER;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 125 "al.l"
+#line 127 "al.l"
 {add_token(yylineno, "Single Line Comment", "COMMENTS", "char*");}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 128 "al.l"
+#line 130 "al.l"
 {BEGIN(STRING); i = 0; string = (char*)malloc(sizeof(char));} 
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 129 "al.l"
+#line 131 "al.l"
 {
-            string = (char*)realloc(string,(i+1)*sizeof(char));
             string[i]='\0';
             i++;
             add_token(yylineno, string, "STRING", "char*");
-            string = NULL;
             BEGIN(INITIAL);
-            yylval.strVal = strdup(yytext);
+            yylval.strVal = strdup(string);
+            free(string);
+            i = 0;
             return STRING_TOKEN;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 138 "al.l"
+#line 140 "al.l"
 {
     string = addEscapeChar(string,&i,'\n');
     }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 141 "al.l"
+#line 143 "al.l"
 {
     string = addEscapeChar(string,&i,'\t');
     }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 144 "al.l"
+#line 146 "al.l"
 {
     addEscapeChar(string,&i,'\"');
     }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 147 "al.l"
+#line 149 "al.l"
 {
     string = addEscapeChar(string,&i,'\\');
     }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 150 "al.l"
+#line 152 "al.l"
 {
     string = (char*)realloc(string,(i+1)*sizeof(char));
     string[i]=*yytext;
-    i = i + 1;
+    ++i;
     }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 155 "al.l"
+#line 157 "al.l"
 {printf("Error: Character %s cannot be escaped\n",yytext);}
 	YY_BREAK
 case YY_STATE_EOF(STRING):
-#line 156 "al.l"
+#line 158 "al.l"
 {printf("Error: String not closed\n"); exit(0);}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 161 "al.l"
+#line 163 "al.l"
 {BEGIN(COMMENTS); counter=1;}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 162 "al.l"
+#line 164 "al.l"
 {}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 163 "al.l"
+#line 165 "al.l"
 {}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 164 "al.l"
+#line 166 "al.l"
 {}
 	YY_BREAK
 case 58:
 /* rule 58 can match eol */
 YY_RULE_SETUP
-#line 165 "al.l"
+#line 167 "al.l"
 {}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 166 "al.l"
+#line 168 "al.l"
 {counter++;} 
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 167 "al.l"
+#line 169 "al.l"
 { 
 
                 counter--;
@@ -1195,26 +1198,26 @@ YY_RULE_SETUP
                 }} 
 	YY_BREAK
 case YY_STATE_EOF(COMMENTS):
-#line 176 "al.l"
+#line 178 "al.l"
 {printf("Error: Comment not closed\n"); exit(0);}
 	YY_BREAK
 case 61:
 /* rule 61 can match eol */
 YY_RULE_SETUP
-#line 178 "al.l"
+#line 180 "al.l"
 {}
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 179 "al.l"
+#line 181 "al.l"
 {printf("Error: Unknown token %s\n", yytext); return OTHER;}
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 180 "al.l"
+#line 182 "al.l"
 ECHO;
 	YY_BREAK
-#line 1218 "scanner.c"
+#line 1220 "scanner.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1401,7 +1404,7 @@ static int yy_get_next_buffer (void)
 
 	else
 		{
-			int num_to_read =
+			yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
@@ -1415,7 +1418,7 @@ static int yy_get_next_buffer (void)
 
 			if ( b->yy_is_our_buffer )
 				{
-				int new_size = b->yy_buf_size * 2;
+				yy_size_t new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
 					b->yy_buf_size += b->yy_buf_size / 8;
@@ -1473,7 +1476,7 @@ static int yy_get_next_buffer (void)
 
 	if (((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
 		/* Extend the array by 50%, plus the number we really need. */
-		int new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
+		yy_size_t new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
 		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) yyrealloc(
 			(void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf, (yy_size_t) new_size  );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
@@ -1576,7 +1579,7 @@ static int yy_get_next_buffer (void)
 
 		else
 			{ /* need more input */
-			int offset = (int) ((yy_c_buf_p) - (yytext_ptr));
+			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -1950,12 +1953,12 @@ YY_BUFFER_STATE yy_scan_string (const char * yystr )
  * 
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE yy_scan_bytes  (const char * yybytes, int  _yybytes_len )
+YY_BUFFER_STATE yy_scan_bytes  (const char * yybytes, yy_size_t  _yybytes_len )
 {
 	YY_BUFFER_STATE b;
 	char *buf;
 	yy_size_t n;
-	int i;
+	yy_size_t i;
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = (yy_size_t) (_yybytes_len + 2);
@@ -1997,7 +2000,7 @@ static void yynoreturn yy_fatal_error (const char* msg )
 	do \
 		{ \
 		/* Undo effects of setting up yytext. */ \
-        int yyless_macro_arg = (n); \
+        yy_size_t yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
 		yytext[yyleng] = (yy_hold_char); \
 		(yy_c_buf_p) = yytext + yyless_macro_arg; \
@@ -2037,7 +2040,7 @@ FILE *yyget_out  (void)
 /** Get the length of the current token.
  * 
  */
-int yyget_leng  (void)
+yy_size_t yyget_leng  (void)
 {
         return yyleng;
 }
@@ -2190,7 +2193,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 180 "al.l"
+#line 182 "al.l"
 
 
 /*

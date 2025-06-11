@@ -1,9 +1,11 @@
 %{
-    #include "parser.h" 
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include "icode.h"
     #include "alpha_tokens.h"
+    #include "parser.h" 
+
 
     extern int alpha_yylex(void *);
     extern FILE *yyin;
@@ -127,13 +129,13 @@ OTHER          .
 
 \"  {BEGIN(STRING); i = 0; string = (char*)malloc(sizeof(char));} 
 <STRING>\" {
-            string = (char*)realloc(string,(i+1)*sizeof(char));
             string[i]='\0';
             i++;
             add_token(yylineno, string, "STRING", "char*");
-            string = NULL;
             BEGIN(INITIAL);
-            yylval.strVal = strdup(yytext);
+            yylval.strVal = strdup(string);
+            free(string);
+            i = 0;
             return STRING_TOKEN;}
 <STRING>\\n {
     string = addEscapeChar(string,&i,'\n');
@@ -150,7 +152,7 @@ OTHER          .
 <STRING>. {
     string = (char*)realloc(string,(i+1)*sizeof(char));
     string[i]=*yytext;
-    i = i + 1;
+    ++i;
     }
 <STRING>\\[a-zA-Z] {printf("Error: Character %s cannot be escaped\n",yytext);}
 <STRING><<EOF>> {printf("Error: String not closed\n"); exit(0);}

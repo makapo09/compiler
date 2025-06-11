@@ -75,7 +75,7 @@ Symbol_t* SymTable_lookup(const char* name, unsigned int scope) {
     Symbol_t* sym = hashTable[index];
 
     while(sym) {
-        if(strcmp(sym->name, name) == 0 && sym->scope == scope && sym->isActive)
+        if(strcmp(sym->name, name) == 0 && sym->scope <= scope && sym->isActive)
             return sym;
         sym = sym->next;
     }

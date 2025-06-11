@@ -1,8 +1,9 @@
 #ifndef ICODE_H
 #define ICODE_H
 
+#include <stdio.h>
+
 #include "bison_symtable.h"
-#include "backpatch.h" 
 
 typedef Symbol_t Symbol;
 
@@ -21,8 +22,6 @@ typedef enum expr_t {
     nil_e
 } expr_t;
 
-
-
 typedef struct expr {
     expr_t type;
     Symbol* sym;
@@ -31,8 +30,6 @@ typedef struct expr {
     char* strConst;
     unsigned char boolConst;
     struct expr* next;
-    labelList* truelist;
-    labelList* falselist;
 } expr;
 
 struct call {
@@ -52,6 +49,11 @@ struct statement {
     struct jumpLabels* breaklist;
 };
 
+struct forprefix {
+    unsigned int test;
+    unsigned int enter;
+};
+
 typedef enum iopcode {
     assign, add, sub, mul, div_i, mod,
     uminus, and, or, not,
@@ -69,6 +71,7 @@ typedef struct quad {
     expr* result;
     unsigned label;
     unsigned line;
+    unsigned taddress; 
 } quad;
 
 extern quad* quads;
@@ -80,7 +83,7 @@ void expand(void);
 
 const char* iopcode_to_string(iopcode op);
 char* expr_to_string(expr* e);
-void print_quads(void);
+void print_quads(FILE* filep);
 void write_quads_to_file(const char* filename);
 
 expr* newexpr(expr_t type);
@@ -92,9 +95,22 @@ expr* newexpr_var(Symbol* sym);
 
 struct statement* create_statement ();
 
+expr* make_call (expr* lv, expr* reversed_elist);
+
+
+
 expr* newtemp(void);
 quad* get_quad_at(unsigned index);
 unsigned nextquadlabel(void);
 expr* make_bool_expr(expr* e);
+
+expr* member_item (expr* lv, char* name);   
+expr* emit_iftableitem(expr* e);
+
+void check_arith (expr* e);
+void patchlabel(unsigned quadNo, unsigned label);
+void patchlist(struct jumpLabels* list, unsigned label);
+struct jumpLabels* mergelist(struct jumpLabels* l1, struct jumpLabels* l2);
+struct jumpLabels* makelist(unsigned label);
 
 #endif 

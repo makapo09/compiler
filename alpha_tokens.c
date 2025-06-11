@@ -48,7 +48,7 @@ void free_tokens() {
 }
 
 char* addEscapeChar(char* string,int* i, char escape_char){
-    char* temp = (char*)realloc(string,((*i)+1)*sizeof(char));
+    char* temp = (char*)realloc(string,(*i+1)*sizeof(char));
     temp[*i]= escape_char;
     *i = *i + 1;
     return temp;

@@ -5,8 +5,8 @@
 #include "icode.h"
 
 #define EXPAND_SIZE 1024
-#define CURR_SIZE (total * sizeof(quad))
-#define NEW_SIZE (EXPAND_SIZE * sizeof(quad) + CURR_SIZE)
+#define CURR_SIZE (total * sizeof(struct quad))
+#define NEW_SIZE (EXPAND_SIZE * sizeof(struct quad) + CURR_SIZE)
 
 extern int yylineno;  
 
@@ -37,6 +37,7 @@ void emit(iopcode op, expr* arg1, expr* arg2, expr* result, unsigned label, unsi
     quads[currQuad].result = result;
     quads[currQuad].label = label;
     quads[currQuad].line = line;
+
     ++currQuad;
 }
 
@@ -87,6 +88,23 @@ expr* newexpr_var(Symbol* sym) {
     return e;
 }
 
+
+expr* make_call (expr* lv, expr* reversed_elist) {
+    expr* func = emit_iftableitem(lv);
+    while (reversed_elist) {
+        emit(param, reversed_elist, NULL, NULL , 0, yylineno);
+        reversed_elist = reversed_elist->next;
+    }
+    emit(call, func, NULL, NULL, 0, yylineno);
+    expr* result = newtemp();
+    result->type = var_e;
+    emit(getretval, NULL, NULL, result, 0, yylineno);
+    return result;
+}
+
+
+
+
 expr* newtemp(void) {
     char name[64];
     sprintf(name, "_t%u", temp_counter++);
@@ -127,32 +145,31 @@ const char* iopcode_to_string(iopcode op) {
 }
 
 char* expr_to_string(expr* e) {
-    static char buffer[128]; // static buffer for simplicity
+    char* buffer = (char*)malloc(128);
     if (e == NULL){
-        return "NULL";
+        return "";
     }
 
     if (e->type == constnum_e) {
-        snprintf(buffer, sizeof(buffer), "%.2f", e->numConst);
+        snprintf(buffer, 128, "%.2f", e->numConst);
     } else if (e->type == conststring_e && e->strConst) {
-        snprintf(buffer, sizeof(buffer), "\"%s\"", e->strConst);
+        snprintf(buffer, 128, "\"%s\"", e->strConst);
     } else if (e->type == constbool_e) {
-        snprintf(buffer, sizeof(buffer), e->boolConst ? "true" : "false");
+        snprintf(buffer, 128, e->boolConst ? "true" : "false");
     } else {
-        snprintf(buffer, sizeof(buffer), "%s", e->sym->name);
+        snprintf(buffer, 128, "%s", e->sym->name);
     }
 
 
     return buffer;
 }
 
-void print_quads() {
-    printf("%-5s %-12s %-15s %-15s %-15s %-6s\n", "ID", "Opcode", "Result", "Arg1", "Arg2", "Label");
-    printf("-------------------------------------------------------------------------------\n");
+void print_quads(FILE* filep) {
+    fprintf(filep,"%-5s %-12s %-15s %-15s %-15s %-6s\n", "ID", "Opcode", "Result", "Arg1", "Arg2", "Label");
+    fprintf(filep,"-------------------------------------------------------------------------------\n");
     for (unsigned i = 0; i < currQuad; ++i) {
         quad q = quads[i];
-        //printf("Hereeee %d\n",q.arg2->numConst);
-        printf("%-5u %-12s %-15s %-15s %-15s %-6u\n",
+        fprintf(filep,"%-5u %-12s %-15s %-15s %-15s %-6u\n",
             i,
             iopcode_to_string(q.op),
             expr_to_string(q.result),
@@ -172,20 +189,37 @@ unsigned nextquadlabel(void) {
     return currQuad;
 }
 
-expr* make_bool_expr(expr* e) {
-    if (!e->truelist && !e->falselist) return e;
 
-    expr* result = newtemp();
+expr* emit_iftableitem(expr* e){
+    if(e->type != tableitem_e){
+        return e;
+    } else {
+        expr* result = newexpr(var_e);
+        result->sym = newtemp()->sym;
+        emit(tablegetelem, e, e->index, result, 0, yylineno);
+        return result;
+    }
 
-    backpatch(e->truelist, nextquadlabel());
-    emit(assign, newexpr_constbool(1), NULL, result, 0, yylineno);
+    return (expr*)0;
+}
 
-    emit(jump, NULL, NULL, NULL, nextquadlabel() + 2, yylineno);
+expr* member_item (expr* lv, char* name) {
+    lv = emit_iftableitem(lv); // Emit code if r-value use of table item
+    expr* ti = newexpr(tableitem_e); // Make a new expression
+    ti->sym = lv->sym;
+    ti->index = newexpr_conststring(name); // Const string index
+    return ti;
+}
 
-    backpatch(e->falselist, nextquadlabel());
-    emit(assign, newexpr_constbool(0), NULL, result, 0, yylineno);
-
-    return result;
+void check_arith (expr* e) {
+    if ( e->type == constbool_e ||
+    e->type == conststring_e ||
+    e->type == nil_e ||
+    e->type == newtable_e ||
+    e->type == programfunc_e ||
+    e->type == libraryfunc_e ||
+    e->type == boolexpr_e )
+    fprintf(stderr, "Illegal expr used as arithmetic\n");
 }
 
 
@@ -196,9 +230,48 @@ void write_quads_to_file(const char* filename) {
         return;
     }
 
-    for (unsigned i = 0; i < currQuad; ++i) {
-        fprintf(f, "%u: %d\n", i, quads[i].op);
-    }
+    print_quads(f);
 
     fclose(f);
+}
+
+void patchlabel(unsigned quadNo, unsigned label) {
+    assert(quadNo < currQuad);
+    quads[quadNo].label = label;
+}
+
+void patchlist(struct jumpLabels* list, unsigned label) {
+    while (list) {
+        printf("Patching label at quad %d with label %d\n", list->label, label);
+        patchlabel(list->label, label);
+        list = list->next;
+    }
+}
+
+
+struct jumpLabels* makelist(unsigned label) {
+    struct jumpLabels* node = (struct jumpLabels*)malloc(sizeof(struct jumpLabels));
+    node->label = label;
+    node->next = NULL;
+    return node;
+}
+
+struct jumpLabels* mergelist(struct jumpLabels* l1, struct jumpLabels* l2) {
+    if (!l1) return l2;
+    struct jumpLabels* temp = l1;
+    while (temp->next) temp = temp->next;
+    temp->next = l2;
+    return l1;
+}
+
+expr* make_bool_expr(expr* e) {
+    if (e->type == boolexpr_e || e->type == constbool_e)
+        return e;
+
+    expr* result = newtemp();
+    emit(if_eq, e, newexpr_constbool(1), NULL, nextquadlabel() + 2, yylineno);
+    emit(assign, result, newexpr_constbool(0), NULL, 0, yylineno);
+    emit(jump, NULL, NULL, NULL, nextquadlabel() + 1, yylineno);
+    emit(assign, result, newexpr_constbool(1), NULL, 0, yylineno);
+    return result;
 }

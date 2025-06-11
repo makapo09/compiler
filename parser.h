@@ -1,14 +1,14 @@
-/* A Bison parser, made by GNU Bison 3.7.5.  */
+/* A Bison parser, made by GNU Bison 2.3.  */
 
-/* Bison interface for Yacc-like parsers in C
+/* Skeleton interface for Bison's Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
-   Inc.
+   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
+   Free Software Foundation, Inc.
 
-   This program is free software: you can redistribute it and/or modify
+   This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,7 +16,9 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor,
+   Boston, MA 02110-1301, USA.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -31,85 +33,63 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
-   especially those whose name start with YY_ or yy_.  They are
-   private implementation details that can be changed or removed.  */
-
-#ifndef YY_YY_PARSER_H_INCLUDED
-# define YY_YY_PARSER_H_INCLUDED
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
-
-/* Token kinds.  */
+/* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    IF = 258,                      /* IF  */
-    ELSE = 259,                    /* ELSE  */
-    WHILE = 260,                   /* WHILE  */
-    FOR = 261,                     /* FOR  */
-    FUNCTION = 262,                /* FUNCTION  */
-    RETURN = 263,                  /* RETURN  */
-    BREAK = 264,                   /* BREAK  */
-    CONTINUE = 265,                /* CONTINUE  */
-    AND = 266,                     /* AND  */
-    OR = 267,                      /* OR  */
-    NOT = 268,                     /* NOT  */
-    TRUE = 269,                    /* TRUE  */
-    FALSE = 270,                   /* FALSE  */
-    NIL = 271,                     /* NIL  */
-    LOCAL = 272,                   /* LOCAL  */
-    ASSIGN = 273,                  /* ASSIGN  */
-    PLUS = 274,                    /* PLUS  */
-    MINUS = 275,                   /* MINUS  */
-    MULTIPLY = 276,                /* MULTIPLY  */
-    DIVIDE = 277,                  /* DIVIDE  */
-    MODULO = 278,                  /* MODULO  */
-    EQUAL = 279,                   /* EQUAL  */
-    NOT_EQUAL = 280,               /* NOT_EQUAL  */
-    GREATER_THAN = 281,            /* GREATER_THAN  */
-    LESS_THAN = 282,               /* LESS_THAN  */
-    GREATER_EQUAL = 283,           /* GREATER_EQUAL  */
-    LESS_EQUAL = 284,              /* LESS_EQUAL  */
-    INCREMENT = 285,               /* INCREMENT  */
-    DECREMENT = 286,               /* DECREMENT  */
-    BRACKET_OPEN = 287,            /* BRACKET_OPEN  */
-    BRACKET_CLOSE = 288,           /* BRACKET_CLOSE  */
-    CURLY_BRACKET_OPEN = 289,      /* CURLY_BRACKET_OPEN  */
-    CURLY_BRACKET_CLOSE = 290,     /* CURLY_BRACKET_CLOSE  */
-    SQUARE_BRACKET_OPEN = 291,     /* SQUARE_BRACKET_OPEN  */
-    SQUARE_BRACKET_CLOSE = 292,    /* SQUARE_BRACKET_CLOSE  */
-    COMMA = 293,                   /* COMMA  */
-    SEMICOLON = 294,               /* SEMICOLON  */
-    COLON = 295,                   /* COLON  */
-    DOUBLE_COLON = 296,            /* DOUBLE_COLON  */
-    DOT = 297,                     /* DOT  */
-    DOUBLE_DOT = 298,              /* DOUBLE_DOT  */
-    OTHER = 299,                   /* OTHER  */
-    IDENTIFIER = 300,              /* IDENTIFIER  */
-    STRING_TOKEN = 301,            /* STRING_TOKEN  */
-    INTCONST = 302,                /* INTCONST  */
-    FLOATCONST = 303,              /* FLOATCONST  */
-    IFX = 304,                     /* IFX  */
-    UMINUS = 305                   /* UMINUS  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
+   /* Put the tokens into the symbol table, so that GDB and other debuggers
+      know about them.  */
+   enum yytokentype {
+     IF = 258,
+     ELSE = 259,
+     WHILE = 260,
+     FOR = 261,
+     FUNCTION = 262,
+     RETURN = 263,
+     BREAK = 264,
+     CONTINUE = 265,
+     AND = 266,
+     OR = 267,
+     NOT = 268,
+     TRUE = 269,
+     FALSE = 270,
+     NIL = 271,
+     LOCAL = 272,
+     ASSIGN = 273,
+     PLUS = 274,
+     MINUS = 275,
+     MULTIPLY = 276,
+     DIVIDE = 277,
+     MODULO = 278,
+     EQUAL = 279,
+     NOT_EQUAL = 280,
+     GREATER_THAN = 281,
+     LESS_THAN = 282,
+     GREATER_EQUAL = 283,
+     LESS_EQUAL = 284,
+     INCREMENT = 285,
+     DECREMENT = 286,
+     BRACKET_OPEN = 287,
+     BRACKET_CLOSE = 288,
+     CURLY_BRACKET_OPEN = 289,
+     CURLY_BRACKET_CLOSE = 290,
+     SQUARE_BRACKET_OPEN = 291,
+     SQUARE_BRACKET_CLOSE = 292,
+     COMMA = 293,
+     SEMICOLON = 294,
+     COLON = 295,
+     DOUBLE_COLON = 296,
+     DOT = 297,
+     DOUBLE_DOT = 298,
+     OTHER = 299,
+     IDENTIFIER = 300,
+     STRING_TOKEN = 301,
+     INTCONST = 302,
+     FLOATCONST = 303,
+     IFX = 304,
+     UMINUS = 305
+   };
 #endif
-/* Token kinds.  */
-#define YYEMPTY -2
-#define YYEOF 0
-#define YYerror 256
-#define YYUNDEF 257
+/* Tokens.  */
 #define IF 258
 #define ELSE 259
 #define WHILE 260
@@ -159,30 +139,29 @@ extern int yydebug;
 #define IFX 304
 #define UMINUS 305
 
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 29 "parser.y"
 
+
+
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+typedef union YYSTYPE
+#line 30 "parser.y"
+{
     char* strVal;
     int intVal;
     float floatVal;
     struct expr* exprVal;
     struct statement* statementVal;
     struct call* callVal;
-
-#line 176 "parser.h"
-
-};
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
+    struct forprefix forprefixVal;
+    unsigned int quadlabel;
+}
+/* Line 1529 of yacc.c.  */
+#line 160 "parser.h"
+	YYSTYPE;
+# define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
+# define YYSTYPE_IS_TRIVIAL 1
 #endif
-
 
 extern YYSTYPE yylval;
 
-int yyparse (void);
-
-#endif /* !YY_YY_PARSER_H_INCLUDED  */
